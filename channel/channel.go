@@ -6,8 +6,27 @@ func Run() {
 	fmt.Println(">>> demo chan")
 	c := make(chan int)
 	go func() {
-		c <- 1
+		for {
+			c <- 1
+		}
 	}()
-	<-c
+	go func() {
+		for {
+			c <- 2
+		}
+	}()
+	go func() {
+		for {
+			fmt.Printf("gorount1: %d\n", <-c)
+		}
+	}()
+	go func() {
+		for {
+			fmt.Printf("gorount2: %d\n", <-c)
+		}
+	}()
+	// for {
+
+	// }
 	fmt.Println(make(chan struct{}) == make(chan struct{}))
 }
