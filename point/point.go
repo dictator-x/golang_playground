@@ -12,6 +12,18 @@ type Person struct {
 	address Address
 }
 
+type Context interface {
+}
+
+type myType int
+
+var (
+	background = new(myType)
+)
+
+func newPerson() Context {
+	return background
+}
 func (p Person) introSelf() {
 	fmt.Printf("memory-person: %p\n", &p)
 	fmt.Printf("memory-address: %p\n", &(p.address))
@@ -48,7 +60,7 @@ func Run() {
 	var newpp *Person
 	fmt.Println(newpp)
 	fmt.Printf("nil == nil: %v\n", newpp == nil)
-
+	fmt.Println(newPerson())
 }
 
 func personAsParam(p Person) {
