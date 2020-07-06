@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"math/rand"
+	"time"
 )
 
 func Run() {
@@ -11,6 +12,33 @@ func Run() {
 	fmt.Printf("%T\n", context.Background())
 	fmt.Printf("%p\n", context.Background())
 	startEatBurger()
+	withTimeoutDemo()
+	for {
+	}
+}
+
+func work(ctx context.Context, name string) {
+	for {
+		select {
+		case <-ctx.Done():
+			fmt.Println(name, " get message to quit")
+			return
+		default:
+			fmt.Println(name, "is running")
+			time.Sleep(time.Second)
+		}
+	}
+}
+
+func withTimeoutDemo() {
+	ctx, _ := context.WithTimeout(context.Background(), time.Second*3)
+	go work(ctx, "work1")
+}
+
+func withCancelDemo() {
+	// ctx, cancel := context.WithCancel(context.Background())
+	ctx, _ := context.WithCancel(context.Background())
+	go work(ctx, "work1")
 }
 
 func startEatBurger() {
